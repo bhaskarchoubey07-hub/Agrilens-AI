@@ -1,0 +1,33 @@
+pluginManagement {
+    def flutterSdkPath = {
+        def properties = new Properties()
+        def propertiesFile = new File(settingsDir, 'local.properties')
+        if (propertiesFile.exists()) {
+            propertiesFile.withReader('UTF-8') { reader ->
+                properties.load(reader)
+            }
+        }
+        def sdkPath = properties.getProperty('flutter.sdk')
+        if (sdkPath == null) {
+            sdkPath = System.getenv("FLUTTER_ROOT")
+        }
+        if (sdkPath == null) {
+            sdkPath = "c:/Users/bhask/OneDrive/Documents/agritech/dev_tools/flutter"
+        }
+        return sdkPath
+    }()
+
+    includeBuild("$flutterSdkPath/packages/flutter_tools/gradle")
+
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+
+plugins {
+    id "dev.flutter.flutter-plugin-loader" version "1.0.0"
+}
+
+include ':app'

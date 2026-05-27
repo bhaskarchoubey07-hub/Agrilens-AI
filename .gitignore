@@ -1,0 +1,33 @@
+# Version control ignore rules for AgriLens AI
+
+# Flutter Frontend Ignored Files
+agrilens_app/.dart_tool/
+agrilens_app/.flutter-plugins
+agrilens_app/.flutter-plugins-dependencies
+agrilens_app/.packages
+agrilens_app/build/
+agrilens_app/android/local.properties
+agrilens_app/android/key.properties
+agrilens_app/ios/Flutter/Generated.xcconfig
+agrilens_app/ios/Flutter/flutter_export_environment.sh
+
+# Python Backend Ignored Files
+agrilens_backend/venv/
+agrilens_backend/.env
+agrilens_backend/__pycache__/
+agrilens_backend/app/services/__pycache__/
+agrilens_backend/app/api/__pycache__/
+*.pyc
+
+# Local Development tools
+dev_tools/
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+*.hprof
+*.log
+
