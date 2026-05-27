@@ -288,3 +288,61 @@ def resolve_dialect_slang(
     """
     clarification = LLMService.resolve_slang_dialect(query, lang)
     return clarification
+
+@router.post("/feedback")
+async def save_feedback(
+    file: UploadFile = File(...),
+    crop_type: str = Form(...),
+    predicted_disease: str = Form(...),
+    is_correct: bool = Form(...),
+    lat: float = Form(0.0),
+    lng: float = Form(0.0),
+    comments: str = Form("")
+):
+    """
+    Saves farmer feedback and leaf image locally for future retraining loops.
+    """
+    import os
+    import json
+    
+    # Setup directory
+    feedback_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "static", "feedback_dataset")
+    os.makedirs(feedback_dir, exist_ok=True)
+    
+    # Save Image
+    filename = f"{int(time.time())}_{file.filename}"
+    file_path = os.path.join(feedback_dir, filename)
+    with open(file_path, "wb") as buffer:
+        buffer.write(await file.read())
+        
+    # Prepare metadata entry
+    entry = {
+        "timestamp": time.time(),
+        "image_url": f"/static/feedback_dataset/{filename}",
+        "crop_type": crop_type,
+        "predicted_disease": predicted_disease,
+        "is_correct": is_correct,
+        "gps": {"lat": lat, "lng": lng},
+        "comments": comments
+    }
+    
+    # Read and append to log file
+    log_path = os.path.join(feedback_dir, "feedback_log.json")
+    logs = []
+    if os.path.exists(log_path):
+        try:
+            with open(log_path, "r", encoding="utf-8") as f:
+                logs = json.load(f)
+        except Exception:
+            logs = []
+            
+    logs.append(entry)
+    with open(log_path, "w", encoding="utf-8") as f:
+        json.dump(logs, f, indent=2, ensure_ascii=False)
+        
+    return {
+        "status": "success",
+        "message": "Feedback saved successfully",
+        "logged_entry": entry
+    }
+

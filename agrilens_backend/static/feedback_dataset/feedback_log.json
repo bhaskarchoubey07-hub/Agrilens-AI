@@ -1,0 +1,14 @@
+[
+  {
+    "timestamp": 1779890746.637534,
+    "image_url": "/static/feedback_dataset/1779890746_test_leaf.png",
+    "crop_type": "wheat",
+    "predicted_disease": "wheat_rust",
+    "is_correct": true,
+    "gps": {
+      "lat": 26.9124,
+      "lng": 75.7873
+    },
+    "comments": "Matches actual field symptoms perfectly."
+  }
+]
